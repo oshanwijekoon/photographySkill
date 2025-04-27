@@ -39,14 +39,14 @@ function Header() {
                 className="relative"
               >
                 <span className="text-3xl font-extrabold text-white">
-                  <span className="relative z-10">PAF</span>
+                  <span className="relative z-10">Photoscape</span>
                 </span>
-                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-400 rounded-full opacity-70 animate-pulse"></div>
+                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-purple-400 rounded-full opacity-70 animate-pulse"></div>
               </motion.div>
             </Link>
             
             <nav className="hidden md:ml-10 md:flex md:space-x-8">
-              {['Home', 'Profile', 'Learn Plans', 'Network'].map((item, index) => {
+              {['Home', 'Profile', 'Learn', 'Discover'].map((item, index) => {
                 const path = item === 'Home' ? '/' : 
                              item === 'Learn Plans' ? '/learnplan' : 
                              `/${item.toLowerCase().replace(' ', '')}`;

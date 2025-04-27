@@ -4,56 +4,48 @@ import { UserContext, UIContext } from '../../App';
 function CreatePost() {
   const { user } = useContext(UserContext);
   const { setShowCreatePost } = useContext(UIContext);
-  
-  const [postContent, setPostContent] = useState('');
-  const [mediaPreview, setMediaPreview] = useState(null);
+
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    category: 'Portraits',
+    tags: '',
+    imageUrl: '',
+    captionStyle: 'minimal' // Add this new field
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMediaPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
-  
-  const removeMedia = () => {
-    setMediaPreview(null);
-  };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!postContent.trim() && !mediaPreview) {
-      return;
-    }
-    
+    if (!formData.title.trim() || !formData.description.trim()) return;
+
     setIsSubmitting(true);
-    
     // Simulating post creation
     setTimeout(() => {
       // Here we would normally send data to the server
       console.log({
-        content: postContent,
-        media: mediaPreview,
-        author: user.id
+        ...formData,
+        author: user.name,
+        tags: formData.tags.split(',').map(tag => tag.trim())
       });
-      
       setIsSubmitting(false);
-      setPostContent('');
-      setMediaPreview(null);
       setShowCreatePost(false);
     }, 1000);
   };
-  
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-xl">
         <div className="flex justify-between items-center border-b px-4 py-3">
-          <h2 className="text-xl font-semibold text-black">Create a post</h2>
+          <h2 className="text-xl font-semibold">Create a post</h2>
           <button 
             onClick={() => setShowCreatePost(false)}
             className="text-gray-500 hover:text-gray-700"
@@ -63,89 +55,103 @@ function CreatePost() {
             </svg>
           </button>
         </div>
-        
-        <form onSubmit={handleSubmit}>
-          <div className="p-4">
-            <div className="flex items-start gap-3 mb-4">
-              <img 
-                src={user.profileImage} 
-                alt={user.name}
-                className="w-10 h-10 rounded-full"
+
+        <form onSubmit={handleSubmit} className="p-4">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+                required
               />
-              <div>
-                <h3 className="font-medium">{user.name}</h3>
-                <div className="mt-1 text-sm inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-gray-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd" />
-                  </svg>
-                  Public
-                </div>
-              </div>
             </div>
-            
-            <textarea
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
-              placeholder="What skills or experience would you like to share?"
-              className="w-full min-h-[120px] border-0 focus:ring-0 text-lg resize-none text-black"
-            ></textarea>
-            
-            {mediaPreview && (
-              <div className="relative mt-2 rounded-lg overflow-hidden">
-                <img src={mediaPreview} alt="Preview" className="w-full h-auto" />
-                <button
-                  type="button"
-                  onClick={removeMedia}
-                  className="absolute top-2 right-2 bg-gray-800 bg-opacity-70 rounded-full p-1 text-white"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={4}
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+                required
+              ></textarea>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 text-emerald-600 font-medium"
+              >
+                <option value="Portraits" className="text-black">Portraits</option>
+                <option value="Landscape" className="text-black">Landscape</option>
+                <option value="Street" className="text-black">Street</option>
+                <option value="Wildlife" className="text-black">Wildlife</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated)</label>
+              <input
+                type="text"
+                name="tags"
+                value={formData.tags}
+                onChange={handleChange}
+                placeholder="e.g., portrait, lighting, composition"
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+              <input
+                type="url"
+                name="imageUrl"
+                value={formData.imageUrl}
+                onChange={handleChange}
+                placeholder="https://example.com/image.jpg"
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Caption Style</label>
+              <select
+                name="captionStyle"
+                value={formData.captionStyle}
+                onChange={handleChange}
+                className="w-full rounded-md border border-black-2 focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="minimal">Minimal & Clean</option>
+                <option value="detailed">Detailed Technical Info</option>
+                <option value="artistic">Artistic Expression</option>
+                <option value="storytelling">Storytelling</option>
+                <option value="instructional">Tutorial/How-To</option>
+                <option value="location">Location Based</option>
+                <option value="equipment">Equipment Focused</option>
+                <option value="behind">Behind the Scenes</option>
+                <option value="emotional">Emotional/Mood</option>
+                <option value="challenge">Photography Challenge</option>
+              </select>
+            </div>
           </div>
-          
-          <div className="px-4 py-3 border-t flex justify-between items-center">
-            <div className="flex gap-3">
-              <label className="flex items-center gap-1 py-2 px-3 rounded-md text-gray-500 hover:bg-gray-100 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                </svg>
-                <span>Photo</span>
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={handleFileChange}
-                  className="hidden" 
-                />
-              </label>
-              
-              <button type="button" className="flex items-center gap-1 py-2 px-3 rounded-md text-gray-500 hover:bg-gray-100">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                </svg>
-                <span>Video</span>
-              </button>
-              
-              <button type="button" className="flex items-center gap-1 py-2 px-3 rounded-md text-gray-500 hover:bg-gray-100">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clipRule="evenodd" />
-                </svg>
-                <span>Document</span>
-              </button>
-            </div>
-            
+
+          <div className="flex justify-end mt-6">
             <button
               type="submit"
-              disabled={isSubmitting || (!postContent.trim() && !mediaPreview)}
+              disabled={isSubmitting}
               className={`px-4 py-2 rounded-md text-white font-medium ${
-                isSubmitting || (!postContent.trim() && !mediaPreview)
-                  ? 'bg-blue-300 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
               }`}
             >
-              {isSubmitting ? 'Posting...' : 'Post'}
+              {isSubmitting ? 'Creating...' : 'Create Post'}
             </button>
           </div>
         </form>

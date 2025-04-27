@@ -19,20 +19,39 @@ const Feed = () => {
     // Mock API call
     setTimeout(() => {
       const mockPosts = Array(10).fill().map((_, i) => ({
-        id: i.toString(),
+        id: `post-${i}`,
         author: {
           id: i % 3 === 0 ? user.id : `user-${i}`,
           name: i % 3 === 0 ? user.name : `User ${i}`,
           profileImage: `https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i + 1}.jpg`,
-          title: `${i % 2 === 0 ? 'Software Engineer' : 'Product Manager'}`
+          title: `${i % 2 === 0 ? 'Professional Photographer' : 'Photography Enthusiast'}`
         },
-        content: `This is post #${i + 1} with some interesting content about technology, innovation, and professional growth.`,
-        image: i % 3 === 0 ? `https://picsum.photos/seed/${i}/600/400` : null,
+        content: getRandomPhotoContent(),
+        image: `https://picsum.photos/seed/${i}/800/600`,
         likes: Math.floor(Math.random() * 200),
         comments: Math.floor(Math.random() * 50),
         shares: Math.floor(Math.random() * 30),
         timestamp: new Date(Date.now() - Math.floor(Math.random() * 10 * 24 * 60 * 60 * 1000)).toISOString(),
+        tags: getRandomPhotoTags()
       }));
+
+      function getRandomPhotoContent() {
+        const contents = [
+          "Just wrapped up a fantastic landscape shoot in the mountains! Here's one of my favorite shots. Shot with f/8, 1/250s, ISO 100. What do you think?",
+          "Testing out some new portrait lighting techniques. Love how the shadows play in this one.",
+          "Street photography is all about timing. Caught this beautiful moment today.",
+          "Experimenting with long exposure photography. Tips welcome!",
+          "New addition to my gear family! Can't wait to test this lens out.",
+          "Here's a behind-the-scenes look at today's studio setup. Always learning!"
+        ];
+        return contents[Math.floor(Math.random() * contents.length)];
+      }
+
+      function getRandomPhotoTags() {
+        const tags = ['#Photography', '#PhotoOfTheDay', '#Nikon', '#Canon', '#SonyAlpha', '#Landscape', '#Portrait', '#StreetPhotography', '#Composition', '#LightingSetup'];
+        return tags.sort(() => 0.5 - Math.random()).slice(0, 3);
+      }
+
       setPosts(mockPosts);
       setIsLoading(false);
     }, 1000);
@@ -54,7 +73,7 @@ const Feed = () => {
   const filterButtons = [
     { id: 'trending', label: 'Trending', icon: <FaFire /> },
     { id: 'recent', label: 'Recent', icon: <FaClock /> },
-    { id: 'top', label: 'Top', icon: <FaStar /> }
+    { id: 'featured', label: 'Featured', icon: <FaStar /> }
   ];
 
   if (isLoading) {

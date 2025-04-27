@@ -28,12 +28,12 @@ function App() {
   const [user, setUser] = useState({
     id: "1",
     name: "John Doe",
-    title: "Software Engineer",
+    title: "Professional Photographer",
     profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
-    background: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809",
+    background: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d",
     connections: 342,
     isAuthenticated: true,
-    isAdmin: true // Adding isAdmin property for Learn Plan management
+    isAdmin: true
   });
   
   // App-wide UI state
