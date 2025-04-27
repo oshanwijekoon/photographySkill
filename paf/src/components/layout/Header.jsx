@@ -34,7 +34,7 @@ function Header() {
                   whileHover={{ y: -2 }}
                 >
                   <Link
-                    to={`/${item.toLowerCase()}`}
+                    to={item === 'Learn' ? '/learnplan' : `/${item.toLowerCase()}`}
                     className="text-white/80 hover:text-white transition-colors px-3 py-2 text-sm font-medium"
                   >
                     {item}
