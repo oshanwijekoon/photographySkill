@@ -13,6 +13,7 @@ const Feed = () => {
   const [filter, setFilter] = useState('trending');
 
   // Simulate fetching posts from an API
+  //rgrgththth
   useEffect(() => {
     setIsLoading(true);
     // Mock API call

@@ -14,6 +14,7 @@ import Header from './components/layout/Header';
 import { AnimatePresence } from 'framer-motion';
 import './App.css';
 
+//grgrg
 // Create contexts for user and UI state
 export const UserContext = createContext({
   user: null,
