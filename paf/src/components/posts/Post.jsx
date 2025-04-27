@@ -119,10 +119,15 @@ const Post = ({ post }) => {
 
       {/* Post Stats */}
       <div className="px-4 py-2 flex items-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center">
-          <span className="bg-blue-500 text-white rounded-full p-1 text-xs mr-1">
-            <FaThumbsUp size={10} />
-          </span>
+        <div className="flex items-center gap-2">
+          <div className="flex -space-x-1 items-center">
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-500 dark:text-blue-400">
+              👍
+            </span>
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-400">
+              ❤️
+            </span>
+          </div>
           <span>{likeCount}</span>
         </div>
         <div className="ml-auto flex space-x-4">
@@ -138,8 +143,8 @@ const Post = ({ post }) => {
           whileTap={{ scale: 0.95 }}
           onClick={handleLike}
         >
-          {isLiked ? <FaThumbsUp className="mr-2" /> : <FaRegThumbsUp className="mr-2" />}
-          <span>Like</span>
+          {isLiked ? '👍' : <FaRegThumbsUp className="mr-2" />}
+          <span className="ml-2">Like</span>
         </motion.button>
         <motion.button 
           className="flex items-center justify-center w-1/4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
