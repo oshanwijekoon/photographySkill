@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { motion } from 'framer-motion';
@@ -7,26 +7,13 @@ function Header() {
   const { user } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
-
-  // Add scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-black/80 backdrop-blur-md' : 'bg-transparent'
-    }`}>
+    <header className="fixed w-full z-50 bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">

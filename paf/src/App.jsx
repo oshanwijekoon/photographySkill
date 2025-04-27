@@ -13,6 +13,7 @@ import Header from './components/layout/Header';
 import { AnimatePresence } from 'framer-motion';
 import './App.css';
 import PostManagement from './components/posts/PostManagement';
+import DiscoverPage from './components/discover/DiscoverPage';
 
 // Create contexts for user and UI state
 export const UserContext = createContext(null);  // Change this line
@@ -79,6 +80,7 @@ function App() {
                   <Route path="/posts/manage" element={<PostManagement />} />
                   <Route path="/learnplan" element={<LearnPlanPage />} />
                   <Route path="/learnplan/:id" element={<LearnPlanDetails />} />
+                  <Route path="/discover" element={<DiscoverPage />} />
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               </main>

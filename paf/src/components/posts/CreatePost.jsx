@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { UserContext, UIContext } from '../../App';
+import { FaCamera, FaTimes, FaLeaf } from 'react-icons/fa';
 
 function CreatePost({ standalone = false, onPostCreated }) {
   const { user } = useContext(UserContext);
@@ -8,10 +9,11 @@ function CreatePost({ standalone = false, onPostCreated }) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: 'Portraits',
+    category: 'Wildlife',
     tags: '',
     imageUrl: '',
-    captionStyle: 'minimal' // Add this new field
+    captionStyle: 'natural',
+    location: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,132 +51,144 @@ function CreatePost({ standalone = false, onPostCreated }) {
       setFormData({
         title: '',
         description: '',
-        category: 'Portraits',
+        category: 'Wildlife',
         tags: '',
         imageUrl: '',
-        captionStyle: 'minimal'
+        captionStyle: 'natural',
+        location: ''
       });
     }, 1000);
   };
 
   const content = (
-    <form onSubmit={handleSubmit} className="p-4">
-      <div className="space-y-4">
+    <form onSubmit={handleSubmit} className="p-6 bg-gradient-to-b from-green-50 to-white">
+      <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <label className="block text-lg font-semibold text-green-800 mb-2">
+            <FaCamera className="inline mr-2" />
+            Capture Title
+          </label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
+            placeholder="e.g., 'Majestic Lion at Sunset'"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label className="block text-lg font-semibold text-green-800 mb-2">
+            <FaLeaf className="inline mr-2" />
+            Description
+          </label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows={4}
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
+            placeholder="Share the story behind your wildlife encounter..."
             required
           ></textarea>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 text-emerald-600 font-medium"
-          >
-            <option value="Portraits" className="text-black">Portraits</option>
-            <option value="Landscape" className="text-black">Landscape</option>
-            <option value="Street" className="text-black">Street</option>
-            <option value="Wildlife" className="text-black">Wildlife</option>
-          </select>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-lg font-semibold text-green-800 mb-2">Category</label>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
+            >
+              <option value="Wildlife">Wildlife</option>
+              <option value="Birds">Birds</option>
+              <option value="Mammals">Mammals</option>
+              <option value="Reptiles">Reptiles</option>
+              <option value="Marine Life">Marine Life</option>
+              <option value="Insects">Insects</option>
+              <option value="Nature">Nature</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-lg font-semibold text-green-800 mb-2">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
+              placeholder="e.g., 'Serengeti National Park'"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated)</label>
+          <label className="block text-lg font-semibold text-green-800 mb-2">Tags</label>
           <input
             type="text"
             name="tags"
             value={formData.tags}
             onChange={handleChange}
-            placeholder="e.g., portrait, lighting, composition"
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            placeholder="wildlife, nature, safari, animal"
+            className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+          <label className="block text-lg font-semibold text-green-800 mb-2">Image URL</label>
           <input
             type="url"
             name="imageUrl"
             value={formData.imageUrl}
             onChange={handleChange}
-            placeholder="https://example.com/image.jpg"
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border-2 border-green-200 p-3 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white/90"
+            placeholder="https://example.com/wildlife-image.jpg"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Caption Style</label>
-          <select
-            name="captionStyle"
-            value={formData.captionStyle}
-            onChange={handleChange}
-            className="w-full rounded-md border border-black-2 focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="minimal">Minimal & Clean</option>
-            <option value="detailed">Detailed Technical Info</option>
-            <option value="artistic">Artistic Expression</option>
-            <option value="storytelling">Storytelling</option>
-            <option value="instructional">Tutorial/How-To</option>
-            <option value="location">Location Based</option>
-            <option value="equipment">Equipment Focused</option>
-            <option value="behind">Behind the Scenes</option>
-            <option value="emotional">Emotional/Mood</option>
-            <option value="challenge">Photography Challenge</option>
-          </select>
-        </div>
+      
       </div>
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-8">
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`px-4 py-2 rounded-md text-white font-medium ${
-            isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          className={`px-6 py-3 rounded-lg text-white font-medium text-lg transition-colors ${
+            isSubmitting 
+              ? 'bg-green-400 cursor-not-allowed' 
+              : 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl'
           }`}
         >
-          {isSubmitting ? 'Creating...' : 'Create Post'}
+          {isSubmitting ? 'Sharing...' : 'Share Wildlife Post'}
         </button>
       </div>
     </form>
   );
 
   if (standalone) {
-    return content;
+    return (
+      <div className="max-w-4xl mx-auto py-8 px-4">
+        <h1 className="text-3xl font-bold text-green-800 mb-6">Share Your Wildlife Experience</h1>
+        {content}
+      </div>
+    );
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-xl">
-        <div className="flex justify-between items-center border-b px-4 py-3">
-          <h2 className="text-xl font-semibold text-black">Create a post</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl">
+        <div className="flex justify-between items-center border-b px-6 py-4 bg-green-700 text-white rounded-t-xl">
+          <h2 className="text-2xl font-semibold">Share Your Wildlife Experience</h2>
           <button 
             onClick={() => setShowCreatePost(false)}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-white hover:text-green-200 transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <FaTimes className="h-6 w-6" />
           </button>
         </div>
         {content}
