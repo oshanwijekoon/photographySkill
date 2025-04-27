@@ -154,8 +154,8 @@ const Feed = () => {
         </div>
       </div> */}
 
-      {/* Filter Controls */}
-      <div className="mb-6">
+      {/* Temporarily disabled Filter Controls Section */}
+      {/* <div className="mb-6">
         <div className={`flex items-center p-3 rounded-xl shadow-sm ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
           <FaFilter className="mr-2 text-blue-500" />
           <span className="mr-4">Filter:</span>
@@ -176,7 +176,7 @@ const Feed = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Posts Feed */}
       <div className="space-y-6">
