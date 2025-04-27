@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { UserContext, UIContext } from '../../App';
 
-function CreatePost() {
+function CreatePost({ standalone = false, onPostCreated }) {
   const { user } = useContext(UserContext);
   const { setShowCreatePost } = useContext(UIContext);
 
@@ -30,16 +30,138 @@ function CreatePost() {
     setIsSubmitting(true);
     // Simulating post creation
     setTimeout(() => {
-      // Here we would normally send data to the server
-      console.log({
+      const newPost = {
+        id: Date.now().toString(),
         ...formData,
         author: user.name,
         tags: formData.tags.split(',').map(tag => tag.trim())
-      });
+      };
+      
+      if (onPostCreated) {
+        onPostCreated(newPost);
+      }
+      
       setIsSubmitting(false);
-      setShowCreatePost(false);
+      if (!standalone) {
+        setShowCreatePost(false);
+      }
+      // Reset form
+      setFormData({
+        title: '',
+        description: '',
+        category: 'Portraits',
+        tags: '',
+        imageUrl: '',
+        captionStyle: 'minimal'
+      });
     }, 1000);
   };
+
+  const content = (
+    <form onSubmit={handleSubmit} className="p-4">
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+            required
+          ></textarea>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 text-emerald-600 font-medium"
+          >
+            <option value="Portraits" className="text-black">Portraits</option>
+            <option value="Landscape" className="text-black">Landscape</option>
+            <option value="Street" className="text-black">Street</option>
+            <option value="Wildlife" className="text-black">Wildlife</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated)</label>
+          <input
+            type="text"
+            name="tags"
+            value={formData.tags}
+            onChange={handleChange}
+            placeholder="e.g., portrait, lighting, composition"
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+          <input
+            type="url"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            placeholder="https://example.com/image.jpg"
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Caption Style</label>
+          <select
+            name="captionStyle"
+            value={formData.captionStyle}
+            onChange={handleChange}
+            className="w-full rounded-md border border-black-2 focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="minimal">Minimal & Clean</option>
+            <option value="detailed">Detailed Technical Info</option>
+            <option value="artistic">Artistic Expression</option>
+            <option value="storytelling">Storytelling</option>
+            <option value="instructional">Tutorial/How-To</option>
+            <option value="location">Location Based</option>
+            <option value="equipment">Equipment Focused</option>
+            <option value="behind">Behind the Scenes</option>
+            <option value="emotional">Emotional/Mood</option>
+            <option value="challenge">Photography Challenge</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex justify-end mt-6">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`px-4 py-2 rounded-md text-white font-medium ${
+            isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          }`}
+        >
+          {isSubmitting ? 'Creating...' : 'Create Post'}
+        </button>
+      </div>
+    </form>
+  );
+
+  if (standalone) {
+    return content;
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -55,106 +177,7 @@ function CreatePost() {
             </svg>
           </button>
         </div>
-
-        <form onSubmit={handleSubmit} className="p-4">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
-                required
-              ></textarea>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 text-emerald-600 font-medium"
-              >
-                <option value="Portraits" className="text-black">Portraits</option>
-                <option value="Landscape" className="text-black">Landscape</option>
-                <option value="Street" className="text-black">Street</option>
-                <option value="Wildlife" className="text-black">Wildlife</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated)</label>
-              <input
-                type="text"
-                name="tags"
-                value={formData.tags}
-                onChange={handleChange}
-                placeholder="e.g., portrait, lighting, composition"
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-              <input
-                type="url"
-                name="imageUrl"
-                value={formData.imageUrl}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Caption Style</label>
-              <select
-                name="captionStyle"
-                value={formData.captionStyle}
-                onChange={handleChange}
-                className="w-full rounded-md border border-black-2 focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="minimal">Minimal & Clean</option>
-                <option value="detailed">Detailed Technical Info</option>
-                <option value="artistic">Artistic Expression</option>
-                <option value="storytelling">Storytelling</option>
-                <option value="instructional">Tutorial/How-To</option>
-                <option value="location">Location Based</option>
-                <option value="equipment">Equipment Focused</option>
-                <option value="behind">Behind the Scenes</option>
-                <option value="emotional">Emotional/Mood</option>
-                <option value="challenge">Photography Challenge</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex justify-end mt-6">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`px-4 py-2 rounded-md text-white font-medium ${
-                isSubmitting ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-            >
-              {isSubmitting ? 'Creating...' : 'Create Post'}
-            </button>
-          </div>
-        </form>
+        {content}
       </div>
     </div>
   );

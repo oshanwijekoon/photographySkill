@@ -1,6 +1,5 @@
 import { useState, createContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// Remove Navbar import since Header already includes navigation
 import Sidebar from './components/layout/Sidebar';
 import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
@@ -13,13 +12,10 @@ import LearnPlanDetails from './components/learnplan/LearnPlanDetails';
 import Header from './components/layout/Header';
 import { AnimatePresence } from 'framer-motion';
 import './App.css';
+import PostManagement from './components/posts/PostManagement';
 
-//grgrg
 // Create contexts for user and UI state
-export const UserContext = createContext({
-  user: null,
-  setUser: () => {}
-});
+export const UserContext = createContext(null);  // Change this line
 export const UIContext = createContext(null);
 export const ThemeContext = createContext(null);
 
@@ -71,35 +67,24 @@ function App() {
       <UIContext.Provider value={{ showCreatePost, setShowCreatePost }}>
         <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
           <Router>
-            <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 ${isDarkMode ? 'dark' : ''}`}>
+            <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
               <Header />
-              <div className="container mx-auto px-0 md:px-4 w-full max-w-none">
-                <div className="flex flex-col md:flex-row">
-                  <div className="md:w-1/4 lg:w-1/5 md:p-4">
-                    <div className="sticky top-20">
-                      <Sidebar />
-                    </div>
-                  </div>
-                  <main className="md:w-3/4 lg:w-4/5 md:p-4 flex flex-col">
-                    <Routes>
-                      <Route path="/login" element={user.isAuthenticated ? <Navigate to="/" /> : <Login />} />
-                      <Route path="/register" element={user.isAuthenticated ? <Navigate to="/" /> : <Register />} />
-                      <Route path="/" element={<Feed />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/messages" element={<MessageCenter />} />
-                      <Route path="/learnplan" element={<LearnPlanPage />} />
-                      <Route path="/learnplan/:id" element={<LearnPlanDetails />} />
-                      <Route path="*" element={<Navigate to="/" />} />
-                    </Routes>
-                  </main>
-                </div>
-              </div>
-              
+              <main className="w-full">
+                <Routes>
+                  <Route path="/login" element={user.isAuthenticated ? <Navigate to="/" /> : <Login />} />
+                  <Route path="/register" element={user.isAuthenticated ? <Navigate to="/" /> : <Register />} />
+                  <Route path="/" element={<Feed />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/messages" element={<MessageCenter />} />
+                  <Route path="/posts/manage" element={<PostManagement />} />
+                  <Route path="/learnplan" element={<LearnPlanPage />} />
+                  <Route path="/learnplan/:id" element={<LearnPlanDetails />} />
+                  <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+              </main>
               <AnimatePresence>
                 {showCreatePost && <CreatePost />}
               </AnimatePresence>
-              
-              {/* Remove the floating action button */}
             </div>
           </Router>
         </ThemeContext.Provider>
