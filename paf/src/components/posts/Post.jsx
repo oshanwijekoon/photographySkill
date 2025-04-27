@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaThumbsUp, FaRegThumbsUp, FaComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
+import { FaThumbsUp, FaRegThumbsUp, FaComment, FaShare, FaBookmark, FaEllipsisH, FaHeart, FaLaughBeam, FaAngry, FaSurprise } from 'react-icons/fa';
 import { UserContext, ThemeContext } from '../../App';
 import CommentSection from '../comments/CommentSection';
 // Import TimeAgo with error handling
@@ -21,6 +21,16 @@ const Post = ({ post }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
+  const [reactionType, setReactionType] = useState(null);
+  const [showReactions, setShowReactions] = useState(false);
+
+  const reactions = [
+    { emoji: "👍", type: "like", Icon: FaThumbsUp },
+    { emoji: "❤️", type: "love", Icon: FaHeart },
+    { emoji: "😂", type: "haha", Icon: FaLaughBeam },
+    { emoji: "😮", type: "wow", Icon: FaSurprise },
+    { emoji: "😠", type: "angry", Icon: FaAngry },
+  ];
 
   // Format date as fallback for TimeAgo
   useEffect(() => {
@@ -53,6 +63,17 @@ const Post = ({ post }) => {
 
   const toggleComments = () => {
     setShowComments(!showComments);
+  };
+
+  const handleReaction = (type) => {
+    if (reactionType === type) {
+      setReactionType(null);
+      setLikeCount(likeCount - 1);
+    } else {
+      if (!reactionType) setLikeCount(likeCount + 1);
+      setReactionType(type);
+    }
+    setShowReactions(false);
   };
 
   const renderTimeAgo = () => {
@@ -119,28 +140,58 @@ const Post = ({ post }) => {
 
       {/* Post Stats */}
       <div className="px-4 py-2 flex items-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center">
-          <span className="bg-blue-500 text-white rounded-full p-1 text-xs mr-1">
-            <FaThumbsUp size={10} />
-          </span>
-          <span>{likeCount}</span>
+        <div className="flex items-center gap-1">
+          <div className="flex -space-x-1">
+            {likeCount > 0 && reactions.slice(0, Math.min(3, likeCount)).map((reaction, index) => (
+              <span key={index} className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+                {reaction.emoji}
+              </span>
+            ))}
+          </div>
+          <span className="ml-2">{likeCount}</span>
         </div>
         <div className="ml-auto flex space-x-4">
-          <span>{post.comments} comments</span>
+          <span>{post.comments?.length || 0} comments</span>
           <span>{post.shares} shares</span>
         </div>
       </div>
 
       {/* Post Actions */}
-      <div className="px-4 py-2 flex justify-between border-t border-gray-200 dark:border-gray-700">
-        <motion.button 
-          className={`flex items-center justify-center w-1/4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${isLiked ? 'text-blue-500 font-semibold' : ''}`}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleLike}
-        >
-          {isLiked ? <FaThumbsUp className="mr-2" /> : <FaRegThumbsUp className="mr-2" />}
-          <span>Like</span>
-        </motion.button>
+      <div className="px-4 py-2 flex justify-between border-t border-gray-200 dark:border-gray-700 relative">
+        <div className="relative">
+          <motion.button 
+            className={`flex items-center justify-center py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${reactionType ? 'text-blue-500 font-semibold' : ''}`}
+            whileTap={{ scale: 0.95 }}
+            onHoverStart={() => setShowReactions(true)}
+            onHoverEnd={() => setTimeout(() => setShowReactions(false), 500)}
+          >
+            {reactionType ? reactions.find(r => r.type === reactionType)?.emoji : '👍'}
+            <span className="ml-2">Like</span>
+          </motion.button>
+
+          {showReactions && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: -50 }}
+              className="absolute bottom-full left-0 flex gap-1 bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
+              onMouseEnter={() => setShowReactions(true)}
+              onMouseLeave={() => setShowReactions(false)}
+            >
+              {reactions.map((reaction) => (
+                <button
+                  key={reaction.type}
+                  onClick={() => handleReaction(reaction.type)}
+                  className={`p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transform hover:scale-125 transition-transform ${
+                    reactionType === reaction.type ? 'scale-125 bg-gray-100 dark:bg-gray-700' : ''
+                  }`}
+                >
+                  {reaction.emoji}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </div>
+
         <motion.button 
           className="flex items-center justify-center w-1/4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
           whileTap={{ scale: 0.95 }}
@@ -167,7 +218,12 @@ const Post = ({ post }) => {
       </div>
 
       {/* Comment Section */}
-      {showComments && <CommentSection postId={post.id} />}
+      {showComments && <CommentSection 
+        postId={post.id}
+        comments={post.comments}
+        currentUser={user}
+        isDarkMode={isDarkMode}
+      />}
     </motion.div>
   );
 };
