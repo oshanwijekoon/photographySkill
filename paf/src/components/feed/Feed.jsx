@@ -128,8 +128,8 @@ const Feed = () => {
         </div>
       </div>
 
-      {/* Stories/Highlights Section */}
-      <div className={`max-w-2xl mx-auto px-4 py-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+      {/* Temporarily disabled Stories/Highlights Section */}
+      {/* <div className={`max-w-2xl mx-auto px-4 py-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
         <div className="mb-6 overflow-x-auto hide-scrollbar">
           <div className="flex space-x-4 pb-2">
             {Array(8).fill().map((_, i) => (
@@ -152,44 +152,44 @@ const Feed = () => {
             ))}
           </div>
         </div>
+      </div> */}
 
-        {/* Filter Controls */}
-        <div className="mb-6">
-          <div className={`flex items-center p-3 rounded-xl shadow-sm ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-            <FaFilter className="mr-2 text-blue-500" />
-            <span className="mr-4">Filter:</span>
-            <div className="flex gap-2">
-              {filterButtons.map(btn => (
-                <button
-                  key={btn.id}
-                  onClick={() => setFilter(btn.id)}
-                  className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
-                    filter === btn.id
-                      ? 'bg-blue-500 text-white'
-                      : isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
-                >
-                  {btn.icon}
-                  <span>{btn.label}</span>
-                </button>
-              ))}
-            </div>
+      {/* Filter Controls */}
+      <div className="mb-6">
+        <div className={`flex items-center p-3 rounded-xl shadow-sm ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+          <FaFilter className="mr-2 text-blue-500" />
+          <span className="mr-4">Filter:</span>
+          <div className="flex gap-2">
+            {filterButtons.map(btn => (
+              <button
+                key={btn.id}
+                onClick={() => setFilter(btn.id)}
+                className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                  filter === btn.id
+                    ? 'bg-blue-500 text-white'
+                    : isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {btn.icon}
+                <span>{btn.label}</span>
+              </button>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Posts Feed */}
-        <div className="space-y-6">
-          {filterPosts().map((post, index) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Post post={post} />
-            </motion.div>
-          ))}
-        </div>
+      {/* Posts Feed */}
+      <div className="space-y-6">
+        {filterPosts().map((post, index) => (
+          <motion.div
+            key={post.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <Post post={post} />
+          </motion.div>
+        ))}
       </div>
     </div>
   );
