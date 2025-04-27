@@ -21,7 +21,7 @@ function LearnPlanPage() {
       instructor: "Sarah Johnson",
       level: "Beginner",
       duration: "6 hours",
-      thumbnail: "https://images.unsplash.com/photo-1576567855757-c7c6a957ba50?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      thumbnail: "https://images.unsplash.com/photo-1549366021-9f761d450615?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
       videos: 15,
       rating: 4.8
     },
@@ -57,7 +57,7 @@ function LearnPlanPage() {
       instructor: "David Kim",
       level: "Beginner",
       duration: "4 hours",
-      thumbnail: "https://images.unsplash.com/photo-1542124292-70791af5d2b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      thumbnail: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
       videos: 10,
       rating: 4.6
     }
