@@ -138,30 +138,51 @@ const Post = ({ post }) => {
         )}
       </div>
 
-      {/* Post Stats */}
-      <div className="px-4 py-2 flex items-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-1">
-          <div className="flex -space-x-1">
+      {/* Enhanced Post Stats */}
+      <div className="px-6 py-3 flex items-center text-sm border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+        <div className="flex items-center gap-2">
+          <div className="flex -space-x-2 hover:space-x-0 transition-all duration-300">
             {likeCount > 0 && reactions.slice(0, Math.min(3, likeCount)).map((reaction, index) => (
-              <span key={index} className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+              <motion.span 
+                key={index} 
+                className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-white dark:border-gray-700 hover:scale-110 transition-transform"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+              >
                 {reaction.emoji}
-              </span>
+              </motion.span>
             ))}
           </div>
-          <span className="ml-2">{likeCount}</span>
+          <span className="ml-2 font-medium text-gray-600 dark:text-gray-300">{likeCount}</span>
         </div>
-        <div className="ml-auto flex space-x-4">
-          <span>{post.comments?.length || 0} comments</span>
-          <span>{post.shares} shares</span>
+        <div className="ml-auto flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+          <motion.span 
+            className="flex items-center gap-1 hover:text-blue-500 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+          >
+            <FaComment className="w-4 h-4" />
+            {post.comments?.length || 0}
+          </motion.span>
+          <motion.span 
+            className="flex items-center gap-1 hover:text-green-500 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+          >
+            <FaShare className="w-4 h-4" />
+            {post.shares}
+          </motion.span>
         </div>
       </div>
 
-      {/* Post Actions */}
-      <div className="px-4 py-2 flex justify-between border-t border-gray-200 dark:border-gray-700 relative">
-        <div className="relative">
+      {/* Enhanced Post Actions */}
+      <div className="px-6 py-2 flex justify-between border-t border-gray-200 dark:border-gray-700 relative bg-white dark:bg-gray-800">
+        <div className="relative flex-1">
           <motion.button 
-            className={`flex items-center justify-center py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${reactionType ? 'text-blue-500 font-semibold' : ''}`}
-            whileTap={{ scale: 0.95 }}
+            className={`flex items-center justify-center py-2.5 px-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 w-full transition-colors ${
+              reactionType ? 'text-blue-500 font-semibold bg-blue-50 dark:bg-blue-900/30' : ''
+            }`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onHoverStart={() => setShowReactions(true)}
             onHoverEnd={() => setTimeout(() => setShowReactions(false), 500)}
           >
@@ -173,20 +194,22 @@ const Post = ({ post }) => {
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: -50 }}
-              className="absolute bottom-full left-0 flex gap-1 bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
+              className="absolute bottom-full left-1/2 -translate-x-1/2 flex gap-1 bg-white dark:bg-gray-800 p-2.5 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700"
               onMouseEnter={() => setShowReactions(true)}
               onMouseLeave={() => setShowReactions(false)}
             >
               {reactions.map((reaction) => (
-                <button
+                <motion.button
                   key={reaction.type}
                   onClick={() => handleReaction(reaction.type)}
-                  className={`p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transform hover:scale-125 transition-transform ${
-                    reactionType === reaction.type ? 'scale-125 bg-gray-100 dark:bg-gray-700' : ''
+                  className={`p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transform transition-all duration-200 ${
+                    reactionType === reaction.type ? 'scale-125 bg-gray-100 dark:bg-gray-700 shadow-lg' : ''
                   }`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {reaction.emoji}
-                </button>
+                </motion.button>
               ))}
             </motion.div>
           )}
@@ -217,13 +240,22 @@ const Post = ({ post }) => {
         </motion.button>
       </div>
 
-      {/* Comment Section */}
-      {showComments && <CommentSection 
-        postId={post.id}
-        comments={post.comments}
-        currentUser={user}
-        isDarkMode={isDarkMode}
-      />}
+      {/* Enhanced Comment Section */}
+      {showComments && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <CommentSection 
+            postId={post.id}
+            comments={post.comments}
+            currentUser={user}
+            isDarkMode={isDarkMode}
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 };
