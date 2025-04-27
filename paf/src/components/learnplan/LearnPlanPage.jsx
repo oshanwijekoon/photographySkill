@@ -15,49 +15,49 @@ function LearnPlanPage() {
   const [learnPlans, setLearnPlans] = useState([
     {
       id: "1",
-      title: "React Fundamentals Masterclass",
-      category: "technology",
-      description: "Learn the core concepts of React including hooks, state management, and component lifecycle.",
+      title: "Wildlife Photography Fundamentals",
+      category: "basics",
+      description: "Master the essential techniques of wildlife photography, from camera settings to field techniques.",
       instructor: "Sarah Johnson",
-      level: "Intermediate",
-      duration: "5 hours",
-      thumbnail: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
-      videos: 12,
+      level: "Beginner",
+      duration: "6 hours",
+      thumbnail: "https://images.unsplash.com/photo-1576567855757-c7c6a957ba50?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      videos: 15,
       rating: 4.8
     },
     {
       id: "2",
-      title: "Plant-Based Cooking Essentials",
-      category: "cooking",
-      description: "Master essential plant-based cooking techniques and recipes for a healthier lifestyle.",
+      title: "Bird Photography Mastery",
+      category: "specialized",
+      description: "Learn specialized techniques for capturing birds in flight and their natural behaviors.",
       instructor: "Michael Chen",
-      level: "Beginner",
-      duration: "4 hours",
-      thumbnail: "https://images.unsplash.com/photo-1607532941433-304659e8198a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
-      videos: 8,
+      level: "Intermediate",
+      duration: "5 hours",
+      thumbnail: "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      videos: 12,
       rating: 4.9
     },
     {
       id: "3",
-      title: "Digital Marketing Strategy",
-      category: "business",
-      description: "Learn how to create and implement effective digital marketing strategies for your business.",
+      title: "Safari Photography Expedition",
+      category: "advanced",
+      description: "Advanced techniques for capturing wildlife during safaris, including tracking and safety measures.",
       instructor: "Emily Rodriguez",
       level: "Advanced",
-      duration: "6 hours",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
-      videos: 15,
+      duration: "8 hours",
+      thumbnail: "https://images.unsplash.com/photo-1549366021-9f761d450615?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      videos: 20,
       rating: 4.7
     },
     {
       id: "4",
-      title: "Yoga for Flexibility",
-      category: "fitness",
-      description: "Improve your flexibility and reduce stress with these yoga sequences suitable for all levels.",
+      title: "Wildlife Photography Equipment",
+      category: "gear",
+      description: "Complete guide to selecting and using the right equipment for wildlife photography.",
       instructor: "David Kim",
       level: "Beginner",
-      duration: "3 hours",
-      thumbnail: "https://images.unsplash.com/photo-1552196563-55cd4e45efb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+      duration: "4 hours",
+      thumbnail: "https://images.unsplash.com/photo-1542124292-70791af5d2b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
       videos: 10,
       rating: 4.6
     }
@@ -72,11 +72,11 @@ function LearnPlanPage() {
 
   const categories = [
     { id: 'all', name: 'All Categories', icon: '🔍' },
-    { id: 'technology', name: 'Technology', icon: '💻' },
-    { id: 'business', name: 'Business', icon: '📊' },
-    { id: 'cooking', name: 'Cooking', icon: '🍳' },
-    { id: 'fitness', name: 'Fitness', icon: '💪' },
-    { id: 'arts', name: 'Arts & Crafts', icon: '🎨' }
+    { id: 'basics', name: 'Fundamentals', icon: '📸' },
+    { id: 'specialized', name: 'Specialized', icon: '🦅' },
+    { id: 'advanced', name: 'Advanced', icon: '🦁' },
+    { id: 'gear', name: 'Equipment', icon: '🎥' },
+    { id: 'editing', name: 'Post-Processing', icon: '🖼️' }
   ];
 
   const handleAddLearnPlan = (newPlan) => {
@@ -125,76 +125,6 @@ function LearnPlanPage() {
 
   return (
     <div className="py-8">
-      {!isLoading && (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-r from-blue-500 to-purple-600">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-10 rounded-full transform translate-x-1/3 -translate-y-1/3"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white opacity-10 rounded-full transform -translate-x-1/3 translate-y-1/3"></div>
-            <div className="relative z-10 flex flex-col md:flex-row">
-              <div className="md:w-2/3 p-8 md:p-12 text-white">
-                <motion.h2 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="text-3xl md:text-4xl font-bold mb-4"
-                >
-                  Transform Your Fitness Journey
-                </motion.h2>
-                <div className="flex items-center mb-6">
-                  <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-1 mr-4">
-                    <span className="text-xs font-semibold">Premium</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-yellow-300 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                    <span className="text-sm">4.9 (128 reviews)</span>
-                  </div>
-                </div>
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                  className="text-white/80 mb-6 text-lg leading-relaxed"
-                >
-                  Expert-designed workout plans, personalized nutrition guidance, and mindfulness practices to help you achieve your fitness goals.
-                </motion.p>
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
-                  className="flex gap-4 mt-6"
-                >
-                  <button className="bg-white text-primary-600 px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-colors shadow-lg transform hover:-translate-y-1 hover:shadow-xl duration-200">
-                    Start Learning
-                  </button>
-                  <button className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Watch Preview
-                  </button>
-                </motion.div>
-              </div>
-              <div className="md:w-1/3 relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80" 
-                  alt="Fitness" 
-                  className="h-full w-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -267,11 +197,15 @@ function LearnPlanPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map(i => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse">
-              <div className="h-48 bg-gray-300"></div>
+              <div className="h-64 bg-gray-300"></div>
               <div className="p-5">
                 <div className="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
                 <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
                 <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+                <div className="mt-4 flex items-center space-x-2">
+                  <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+                  <div className="h-4 bg-gray-300 rounded w-24"></div>
+                </div>
               </div>
             </div>
           ))}
